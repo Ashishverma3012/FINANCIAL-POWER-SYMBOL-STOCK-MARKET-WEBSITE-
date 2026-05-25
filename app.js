@@ -281,4 +281,124 @@ document.addEventListener('DOMContentLoaded', () => {
             }, intervalTime);
         }, 300);
     }
+
+    // -------------------------------------------------------------
+    // 7. REAL-TIME MARKET TICK ENGINE (STOCHASTIC SIMULATOR & COMMODITIES)
+    // -------------------------------------------------------------
+    const marketAssets = {
+        nifty: { elementId: 'nifty-price', changeId: 'nifty-change', trendId: 'nifty-trend', base: 22419.55, change: 142.30, pct: 0.64, currency: '₹', precision: 2 },
+        sensex: { elementId: 'sensex-price', changeId: 'sensex-change', trendId: 'sensex-trend', base: 73872.29, change: 456.20, pct: 0.62, currency: '₹', precision: 2 },
+        banknifty: { elementId: 'banknifty-price', changeId: 'banknifty-change', trendId: 'banknifty-trend', base: 47286.40, change: -89.15, pct: -0.19, currency: '₹', precision: 2 },
+        gold: { elementId: 'gold-price', changeId: 'gold-change', trendId: 'gold-trend', base: 2345.50, change: 12.80, pct: 0.55, currency: '$', precision: 2 },
+        silver: { elementId: 'silver-price', changeId: 'silver-change', trendId: 'silver-trend', base: 29.20, change: -0.45, pct: -1.52, currency: '$', precision: 2 }
+    };
+
+    function startTickEngine() {
+        setInterval(() => {
+            for (const [key, asset] of Object.entries(marketAssets)) {
+                // Stochastic geometric random fluctuation (maximum 0.02% variance per tick)
+                const pctChange = (Math.random() - 0.495) * 0.0004; 
+                const tickShift = asset.base * pctChange;
+
+                asset.base += tickShift;
+                asset.change += tickShift;
+                asset.pct = (asset.change / (asset.base - asset.change)) * 100;
+
+                const priceEl = document.getElementById(asset.elementId);
+                const changeEl = document.getElementById(asset.changeId);
+                const trendEl = document.getElementById(asset.trendId);
+
+                // 1. Update Price Text
+                if (priceEl) {
+                    const formatted = asset.base.toLocaleString('en-US', {
+                        minimumFractionDigits: asset.precision,
+                        maximumFractionDigits: asset.precision
+                    });
+                    priceEl.textContent = `${asset.currency}${formatted}`;
+                    
+                    // Add a tiny flash animation to indicate tick update
+                    priceEl.classList.add('transition-all', 'duration-200');
+                    if (tickShift >= 0) {
+                        priceEl.style.textShadow = '0 0 8px rgba(42, 229, 0, 0.4)';
+                    } else {
+                        priceEl.style.textShadow = '0 0 8px rgba(255, 180, 171, 0.4)';
+                    }
+                    setTimeout(() => {
+                        priceEl.style.textShadow = 'none';
+                    }, 250);
+                }
+
+                // 2. Update Change Percentage and Colors
+                if (changeEl) {
+                    const sign = asset.change >= 0 ? '+' : '';
+                    const colorClass = asset.change >= 0 ? 'text-primary-fixed-dim' : 'text-error';
+                    changeEl.textContent = `${sign}${asset.change.toFixed(2)} (${sign}${asset.pct.toFixed(2)}%)`;
+                    
+                    // Reset styling classes cleanly
+                    changeEl.className = `${colorClass} font-data-lg text-sm transition-colors duration-300`;
+                }
+
+                // 3. Update Trend Indicator Icon & Style
+                if (trendEl) {
+                    if (asset.change >= 0) {
+                        trendEl.textContent = 'trending_up';
+                        trendEl.className = 'material-symbols-outlined text-primary-fixed-dim text-sm transition-colors duration-300';
+                        if (trendEl.parentElement.parentElement.classList.contains('border-error/20')) {
+                            trendEl.parentElement.parentElement.classList.remove('border-error/20');
+                        }
+                    } else {
+                        trendEl.textContent = 'trending_down';
+                        trendEl.className = 'material-symbols-outlined text-error text-sm transition-colors duration-300';
+                        // Add border-error helper to visually emphasize down trend cards
+                        if (key === 'banknifty') {
+                            trendEl.parentElement.parentElement.classList.add('border-error/20');
+                        }
+                    }
+                }
+            }
+        }, 1500);
+    }
+
+    startTickEngine();
+
+    // -------------------------------------------------------------
+    // 8. REAL-TIME EXTERNAL MARKET DATA INTEGRATION LAYER (TWELVE DATA)
+    // -------------------------------------------------------------
+    async function fetchTwelveDataFeed() {
+        // Twelve Data API Key Slot - Add key here to switch from simulator to live feed
+        const API_KEY = "3c6f9b2d887a4d62a9390234a9ff5bb3"; // Temporary key or configure here
+        const querySymbols = "NSE:NIFTY50,NSE:SENSEX,NSE:BANKNIFTY,XAU/USD,XAG/USD";
+        
+        try {
+            const res = await fetch(`https://api.twelvedata.com/price?symbol=${querySymbols}&apikey=${API_KEY}`);
+            if (!res.ok) throw new Error(`HTTP Status ${res.status}`);
+            
+            const rawData = await res.json();
+            
+            // Map Twelve Data prices dynamically into the baselines
+            if (rawData['NSE:NIFTY50'] && rawData['NSE:NIFTY50'].price) {
+                marketAssets.nifty.base = parseFloat(rawData['NSE:NIFTY50'].price);
+            }
+            if (rawData['NSE:SENSEX'] && rawData['NSE:SENSEX'].price) {
+                marketAssets.sensex.base = parseFloat(rawData['NSE:SENSEX'].price);
+            }
+            if (rawData['NSE:BANKNIFTY'] && rawData['NSE:BANKNIFTY'].price) {
+                marketAssets.banknifty.base = parseFloat(rawData['NSE:BANKNIFTY'].price);
+            }
+            if (rawData['XAU/USD'] && rawData['XAU/USD'].price) {
+                marketAssets.gold.base = parseFloat(rawData['XAU/USD'].price);
+            }
+            if (rawData['XAG/USD'] && rawData['XAG/USD'].price) {
+                marketAssets.silver.base = parseFloat(rawData['XAG/USD'].price);
+            }
+
+            console.log("Twelve Data API: Baselines refreshed successfully.");
+        } catch (err) {
+            console.warn("Twelve Data API feed unavailable. Continuing on local high-fidelity tick engine.", err);
+        }
+    }
+
+    // Uncomment these lines to enable automatic feed sync on load and every 5 minutes
+    // fetchTwelveDataFeed();
+    // setInterval(fetchTwelveDataFeed, 300000);
 });

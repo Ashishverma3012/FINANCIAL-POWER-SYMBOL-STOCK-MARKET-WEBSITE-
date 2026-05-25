@@ -250,10 +250,10 @@
                         <div class="glass-card milled-edge p-6 rounded-xl glow-green">
                             <div class="flex justify-between items-start mb-4">
                                 <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">NIFTY 50</span>
-                                <span class="material-symbols-outlined text-primary-fixed-dim text-sm">trending_up</span>
+                                <span class="material-symbols-outlined text-primary-fixed-dim text-sm" id="nifty-trend">trending_up</span>
                             </div>
-                            <h2 class="font-display-lg text-primary-fixed text-2xl md:text-3xl">22,419.55</h2>
-                            <p class="text-primary-fixed-dim font-data-lg text-sm">+142.30 (0.64%)</p>
+                            <h2 class="font-display-lg text-primary-fixed text-2xl md:text-3xl" id="nifty-price">22,419.55</h2>
+                            <p class="text-primary-fixed-dim font-data-lg text-sm" id="nifty-change">+142.30 (0.64%)</p>
                             <div class="mt-4 h-12 w-full bg-primary-fixed/5 rounded relative overflow-hidden">
                                 <div class="absolute inset-0 flex items-end">
                                     <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
@@ -265,10 +265,10 @@
                         <div class="glass-card milled-edge p-6 rounded-xl">
                             <div class="flex justify-between items-start mb-4">
                                 <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">SENSEX</span>
-                                <span class="material-symbols-outlined text-primary-fixed-dim text-sm">trending_up</span>
+                                <span class="material-symbols-outlined text-primary-fixed-dim text-sm" id="sensex-trend">trending_up</span>
                             </div>
-                            <h2 class="font-display-lg text-primary-fixed text-2xl md:text-3xl">73,872.29</h2>
-                            <p class="text-primary-fixed-dim font-data-lg text-sm">+456.20 (0.62%)</p>
+                            <h2 class="font-display-lg text-primary-fixed text-2xl md:text-3xl" id="sensex-price">73,872.29</h2>
+                            <p class="text-primary-fixed-dim font-data-lg text-sm" id="sensex-change">+456.20 (0.62%)</p>
                             <div class="mt-4 h-12 w-full bg-primary-fixed/5 rounded relative overflow-hidden">
                                 <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
                                     <path d="M0 18 Q 15 10, 30 15 T 50 5 T 75 12 T 100 8" fill="none" stroke="#2ae500" stroke-width="1.5"></path>
@@ -278,14 +278,60 @@
                         <div class="glass-card milled-edge p-6 rounded-xl border-error/20">
                             <div class="flex justify-between items-start mb-4">
                                 <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">BANK NIFTY</span>
-                                <span class="material-symbols-outlined text-error text-sm">trending_down</span>
+                                <span class="material-symbols-outlined text-error text-sm" id="banknifty-trend">trending_down</span>
                             </div>
-                            <h2 class="font-display-lg text-on-surface text-2xl md:text-3xl">47,286.40</h2>
-                            <p class="text-error font-data-lg text-sm">-89.15 (0.19%)</p>
+                            <h2 class="font-display-lg text-on-surface text-2xl md:text-3xl" id="banknifty-price">47,286.40</h2>
+                            <p class="text-error font-data-lg text-sm" id="banknifty-change">-89.15 (0.19%)</p>
                             <div class="mt-4 h-12 w-full bg-error/5 rounded relative overflow-hidden">
                                 <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
                                     <path d="M0 5 Q 20 15, 40 10 T 60 18 T 80 12 T 100 16" fill="none" stroke="#ffb4ab" stroke-width="1.5"></path>
                                 </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 1.5: Commodities & Bullion Spot Cards -->
+                    <div class="mt-8 mb-4">
+                        <h3 class="font-headline-lg text-on-surface mb-6 text-lg tracking-tight">Commodities &amp; Bullion</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Gold Spot Card -->
+                            <div class="glass-card milled-edge p-6 rounded-xl transition-all duration-300 hover:border-amber-500/30">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="material-symbols-outlined text-amber-400">monetization_on</span>
+                                        <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">GOLD SPOT (XAU/USD)</span>
+                                    </div>
+                                    <span class="material-symbols-outlined text-primary-fixed-dim text-sm" id="gold-trend">trending_up</span>
+                                </div>
+                                <h2 class="font-display-lg text-amber-400 text-2xl md:text-3xl" id="gold-price">$2,345.50</h2>
+                                <p class="text-primary-fixed-dim font-data-lg text-sm" id="gold-change">+12.80 (+0.55%)</p>
+                                <div class="mt-4 h-12 w-full bg-amber-400/5 rounded relative overflow-hidden">
+                                    <div class="absolute inset-0 flex items-end">
+                                        <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
+                                            <path d="M0 12 Q 20 8, 40 15 T 60 5 T 80 10 T 100 3" fill="none" stroke="#fbbf24" stroke-width="1.5"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Silver Spot Card -->
+                            <div class="glass-card milled-edge p-6 rounded-xl transition-all duration-300 hover:border-slate-400/30">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="material-symbols-outlined text-slate-300">circle</span>
+                                        <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">SILVER SPOT (XAG/USD)</span>
+                                    </div>
+                                    <span class="material-symbols-outlined text-error text-sm" id="silver-trend">trending_down</span>
+                                </div>
+                                <h2 class="font-display-lg text-slate-300 text-2xl md:text-3xl" id="silver-price">$29.20</h2>
+                                <p class="text-error font-data-lg text-sm" id="silver-change">-0.45 (-1.52%)</p>
+                                <div class="mt-4 h-12 w-full bg-slate-300/5 rounded relative overflow-hidden">
+                                    <div class="absolute inset-0 flex items-end">
+                                        <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
+                                            <path d="M0 5 Q 20 12, 40 8 T 60 18 T 80 12 T 100 15" fill="none" stroke="#cbd5e1" stroke-width="1.5"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
