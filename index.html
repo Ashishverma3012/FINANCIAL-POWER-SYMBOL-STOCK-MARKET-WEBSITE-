@@ -153,7 +153,7 @@
                 <a href="#tab-dashboard" data-tab-target="dashboard" class="nav-menu-link font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px]">Watchlist</a>
             </nav>
             <div class="flex items-center space-x-4">
-                <span class="font-label-sm text-on-surface-variant text-[10px] hidden sm:inline-block border border-primary-fixed-dim/20 bg-primary-fixed-dim/5 px-3 py-1 rounded">MARKET: <span class="text-primary-fixed-dim font-bold">OPEN</span></span>
+                <span class="font-label-sm text-on-surface-variant text-[10px] hidden sm:inline-block border border-primary-fixed-dim/20 bg-primary-fixed-dim/5 px-3 py-1 rounded">DATE: <span class="text-primary-fixed-dim font-bold mr-2">26-05-2026</span> MARKET: <span class="text-primary-fixed-dim font-bold">OPEN</span></span>
                 
                 <!-- Sign In / Log In and Sign Up Options -->
                 <div class="flex items-center space-x-3 border-l border-white/10 pl-4">
@@ -205,7 +205,7 @@
         <div class="mt-auto">
             <div class="p-3 bg-primary-container/5 border border-primary-fixed/10 rounded-lg mb-3">
                 <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Margin Available</p>
-                <p class="font-data-lg text-primary-fixed-dim font-bold">$42,900.50</p>
+                <p class="font-data-lg text-primary-fixed-dim font-bold">₹42,90,000.50</p>
             </div>
             <button onclick="document.getElementById('watchlist').scrollIntoView({behavior: 'smooth'})" class="w-full py-3 bg-primary-fixed-dim text-on-primary-fixed font-bold rounded-lg glow-green hover:brightness-110 active:scale-95 transition-all text-xs uppercase tracking-widest">
                 Trade Now
@@ -232,6 +232,7 @@
                     <span class="material-symbols-outlined text-md">settings</span>
                 </button>
                 <div class="h-6 w-[1px] bg-white/10"></div>
+                <span class="font-label-sm text-on-surface-variant text-[10px] mr-2">DATE: <span class="text-primary-fixed-dim font-bold">26-05-2026</span></span>
                 <span class="font-label-sm text-on-surface-variant text-[10px]">MARKET: <span class="text-primary-fixed-dim font-bold">OPEN</span></span>
             </div>
         </div>
@@ -299,12 +300,12 @@
                                 <div class="flex justify-between items-start mb-4">
                                     <div class="flex items-center space-x-2">
                                         <span class="material-symbols-outlined text-amber-400">monetization_on</span>
-                                        <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">GOLD SPOT (XAU/USD)</span>
+                                        <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">GOLD SPOT (MCX / 10g)</span>
                                     </div>
                                     <span class="material-symbols-outlined text-primary-fixed-dim text-sm" id="gold-trend">trending_up</span>
                                 </div>
-                                <h2 class="font-display-lg text-amber-400 text-2xl md:text-3xl" id="gold-price">$2,345.50</h2>
-                                <p class="text-primary-fixed-dim font-data-lg text-sm" id="gold-change">+12.80 (+0.55%)</p>
+                                <h2 class="font-display-lg text-amber-400 text-2xl md:text-3xl" id="gold-price">₹72,345.50</h2>
+                                <p class="text-primary-fixed-dim font-data-lg text-sm" id="gold-change">+412.80 (+0.57%)</p>
                                 <div class="mt-4 h-12 w-full bg-amber-400/5 rounded relative overflow-hidden">
                                     <div class="absolute inset-0 flex items-end">
                                         <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
@@ -319,12 +320,12 @@
                                 <div class="flex justify-between items-start mb-4">
                                     <div class="flex items-center space-x-2">
                                         <span class="material-symbols-outlined text-slate-300">circle</span>
-                                        <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">SILVER SPOT (XAG/USD)</span>
+                                        <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">SILVER SPOT (MCX / 1kg)</span>
                                     </div>
                                     <span class="material-symbols-outlined text-error text-sm" id="silver-trend">trending_down</span>
                                 </div>
-                                <h2 class="font-display-lg text-slate-300 text-2xl md:text-3xl" id="silver-price">$29.20</h2>
-                                <p class="text-error font-data-lg text-sm" id="silver-change">-0.45 (-1.52%)</p>
+                                <h2 class="font-display-lg text-slate-300 text-2xl md:text-3xl" id="silver-price">₹86,290.20</h2>
+                                <p class="text-error font-data-lg text-sm" id="silver-change">-745.30 (-0.86%)</p>
                                 <div class="mt-4 h-12 w-full bg-slate-300/5 rounded relative overflow-hidden">
                                     <div class="absolute inset-0 flex items-end">
                                         <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
@@ -814,8 +815,8 @@
                             <div class="flex items-center space-x-3 text-xs">
                                 <span class="text-on-surface-variant">EXPIRY:</span>
                                 <select class="bg-surface-container-low border border-white/10 rounded px-2 py-1 text-xs text-on-surface focus:ring-1 focus:ring-primary-fixed-dim">
-                                    <option>28 MAR 2024</option>
-                                    <option>04 APR 2024</option>
+                                    <option>28 MAY 2026</option>
+                                    <option>04 JUN 2026</option>
                                 </select>
                                 <span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer hover:text-white">settings</span>
                             </div>

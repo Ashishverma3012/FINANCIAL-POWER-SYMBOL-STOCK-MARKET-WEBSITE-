@@ -289,8 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
         nifty: { elementId: 'nifty-price', changeId: 'nifty-change', trendId: 'nifty-trend', base: 22419.55, change: 142.30, pct: 0.64, currency: '₹', precision: 2 },
         sensex: { elementId: 'sensex-price', changeId: 'sensex-change', trendId: 'sensex-trend', base: 73872.29, change: 456.20, pct: 0.62, currency: '₹', precision: 2 },
         banknifty: { elementId: 'banknifty-price', changeId: 'banknifty-change', trendId: 'banknifty-trend', base: 47286.40, change: -89.15, pct: -0.19, currency: '₹', precision: 2 },
-        gold: { elementId: 'gold-price', changeId: 'gold-change', trendId: 'gold-trend', base: 2345.50, change: 12.80, pct: 0.55, currency: '$', precision: 2 },
-        silver: { elementId: 'silver-price', changeId: 'silver-change', trendId: 'silver-trend', base: 29.20, change: -0.45, pct: -1.52, currency: '$', precision: 2 }
+        gold: { elementId: 'gold-price', changeId: 'gold-change', trendId: 'gold-trend', base: 72345.50, change: 412.80, pct: 0.57, currency: '₹', precision: 2 },
+        silver: { elementId: 'silver-price', changeId: 'silver-change', trendId: 'silver-trend', base: 86290.20, change: -745.30, pct: -0.86, currency: '₹', precision: 2 }
     };
 
     function startTickEngine() {
