@@ -1,0 +1,357 @@
+/* AETHERIS STYLESHEET - ANIMATION & INTEGRATED TRADING TERMINAL */
+
+:root {
+    --bg-dark: #0e0e0e;
+    
+    /* Neon Glows */
+    --accent-cyan: #00e5ff;
+    --accent-purple: #8a2be2;
+    --accent-green: #2ae500;
+    
+    /* Text Colors */
+    --text-primary: #e5e2e1;
+    --text-secondary: #a0a0b0;
+    --text-muted: #62627a;
+    
+    /* Styling elements */
+    --glow-cyan: 0 0 15px rgba(0, 229, 255, 0.35);
+    --glow-green: 0 0 15px rgba(42, 229, 0, 0.2);
+}
+
+/* Global Reset */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px; /* offset for fixed header */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Geist', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Styled Scrollbar */
+body::-webkit-scrollbar {
+    width: 6px;
+}
+body::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+body::-webkit-scrollbar-thumb {
+    background: #353534;
+    border-radius: 10px;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Loading Overlay */
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-dark);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1), visibility 0.8s;
+}
+
+.loader-overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.loader-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    color: #ffffff;
+    margin-bottom: 4px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.loader-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+    box-shadow: var(--glow-cyan);
+    transition: width 0.1s ease;
+}
+
+.progress-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Canvas Container */
+.canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0; /* Behind scrolled content */
+    overflow: hidden;
+    background: var(--bg-dark);
+    pointer-events: none; /* Let scroll events pass through */
+}
+
+#scroll-canvas {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Animation Track Trigger (Creates 150vh scroll distance for frames) */
+.animation-track-trigger {
+    height: 150vh;
+    width: 100%;
+    position: relative;
+    pointer-events: none;
+}
+
+/* Scroll Hint element */
+.animation-scroll-hint {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+    opacity: 0.8;
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.animation-scroll-hint.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.mouse-icon {
+    width: 24px;
+    height: 38px;
+    border: 2px solid var(--accent-green);
+    border-radius: 12px;
+    position: relative;
+}
+
+.mouse-icon .wheel {
+    width: 4px;
+    height: 8px;
+    background-color: var(--accent-green);
+    border-radius: 2px;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scrollWheel 1.5s infinite;
+}
+
+@keyframes scrollWheel {
+    0% {
+        opacity: 1;
+        top: 6px;
+    }
+    100% {
+        opacity: 0;
+        top: 18px;
+    }
+}
+
+.hint-text {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--accent-green);
+    text-shadow: 0 0 8px rgba(42, 229, 0, 0.4);
+}
+
+/* Dashboard Content Wrapper Styling */
+.dashboard-content-wrapper {
+    background: linear-gradient(180deg, rgba(14, 14, 14, 0.4) 0%, #0e0e0e 200px, #0e0e0e 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 -25px 50px rgba(0,0,0,0.9);
+}
+
+/* Custom styles from code.html */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glow-green {
+    box-shadow: var(--glow-green);
+}
+
+.milled-edge {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neon-text-green {
+    color: var(--accent-green);
+    text-shadow: 0 0 8px rgba(42, 229, 0, 0.4);
+}
+
+.zebra-row:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #353534;
+    border-radius: 10px;
+}
+
+/* Animation Title Overlay Styling */
+.animation-title-container {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    pointer-events: none;
+    width: 90%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
+}
+
+.anim-heading {
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(28px, 6vw, 76px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    line-height: 1.05;
+    text-transform: uppercase;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+}
+
+.anim-subheading {
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(11px, 1.5vw, 15px);
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--accent-green);
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(42, 229, 0, 0.45);
+}
+
+/* Tab Stage Panels Animations */
+.tab-stage-panel {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tab-stage-panel.hidden {
+    display: none !important;
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+/* Sidebar Slide-in Transitions */
+body.show-sidebar #sidebar-container {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@media (min-width: 1024px) {
+    body.show-sidebar .dashboard-content-wrapper {
+        padding-left: 256px; /* offset main content when sidebar is active */
+    }
+}
+
+/* Sidebar Active Tab Link Style */
+.sidebar-tab-link.active {
+    background-color: var(--accent-green) !important;
+    color: #022100 !important;
+    box-shadow: 0 0 15px rgba(42, 229, 0, 0.4) !important;
+    font-weight: bold;
+}
+
+/* Top Navigation Active Tab Link Style */
+.nav-menu-link.active {
+    border-bottom: 2px solid var(--accent-green) !important;
+    color: var(--accent-green) !important;
+}
+
+/* Gauge Dash Animation */
+#sentiment-gauge-circle {
+    transform-origin: center;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pulsing {
+    animation: pulseGlow 1.5s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    from {
+        box-shadow: 0 0 4px rgba(42, 229, 0, 0.4);
+        opacity: 0.7;
+    }
+    to {
+        box-shadow: 0 0 12px rgba(42, 229, 0, 0.9);
+        opacity: 1;
+    }
+}

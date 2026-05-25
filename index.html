@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Financial Power Symbol // Trader Terminal</title>
+    <meta name="description" content="Pure high-performance scroll-driven canvas frame transitions coupled with real-time financial tracking widgets, AI market sentiment, and option chains.">
+    
+    <!-- Tailwind CSS & Plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#313030",
+                        "primary-fixed-dim": "#2ae500",
+                        "error": "#ffb4ab",
+                        "on-background": "#e5e2e1",
+                        "on-surface": "#e5e2e1",
+                        "surface-variant": "#353534",
+                        "on-tertiary": "#00363a",
+                        "on-tertiary-fixed-variant": "#004f54",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed": "#022100",
+                        "surface": "#131313",
+                        "outline": "#85967c",
+                        "primary": "#efffe3",
+                        "secondary-container": "#46494e",
+                        "on-tertiary-fixed": "#002022",
+                        "surface-bright": "#3a3939",
+                        "tertiary": "#ecfdff",
+                        "tertiary-container": "#55f2ff",
+                        "on-secondary-container": "#b6b8be",
+                        "on-tertiary-container": "#006c73",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-container": "#107100",
+                        "surface-dim": "#131313",
+                        "surface-container": "#201f1f",
+                        "secondary": "#c4c6cc",
+                        "on-primary": "#053900",
+                        "secondary-fixed": "#e0e2e8",
+                        "surface-container-low": "#1c1b1b",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#106e00",
+                        "surface-tint": "#2ae500",
+                        "on-error": "#690005",
+                        "outline-variant": "#3c4b35",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface-variant": "#baccb0",
+                        "background": "#131313",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-fixed-variant": "#44474b",
+                        "primary-container": "#39ff14",
+                        "on-secondary-fixed": "#181c20",
+                        "on-secondary": "#2d3135",
+                        "secondary-fixed-dim": "#c4c6cc",
+                        "tertiary-fixed": "#7df4ff",
+                        "primary-fixed": "#79ff5b",
+                        "on-primary-fixed-variant": "#095300",
+                        "tertiary-fixed-dim": "#00dbe9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter-desktop": "24px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "data-lg": ["Geist"],
+                        "body-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "data-lg": ["20px", {"lineHeight": "28px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Preloader Overlay -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader-content">
+            <div class="loader-logo">AETHERIS</div>
+            <div class="loader-sub">INITIALIZING PREDICTIVE ENGINE</div>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <div id="progress-text" class="progress-text">0% loaded</div>
+        </div>
+    </div>
+
+    <!-- Background Canvas Container -->
+    <div class="canvas-container">
+        <canvas id="scroll-canvas"></canvas>
+    </div>
+
+    <!-- Title Overlay for Scroll Animation -->
+    <div class="animation-title-container">
+        <h1 class="anim-heading">FINANCIAL POWER SYMBOL</h1>
+        <p class="anim-subheading">THE MODERN FINTECH</p>
+    </div>
+
+    <!-- Scroll Track Trigger for Animation (First 150vh) -->
+    <div class="animation-track-trigger">
+        <div class="animation-scroll-hint">
+            <div class="mouse-icon">
+                <div class="wheel"></div>
+            </div>
+            <span class="hint-text">SCROLL TO ANALYZE</span>
+        </div>
+    </div>
+
+    <!-- Transparent Navigation Header (At the absolute top) -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/5 py-4 px-6 md:px-margin-desktop transition-all duration-300">
+        <div class="max-w-[1440px] mx-auto flex justify-between items-center">
+            <a href="#" class="font-headline-lg text-primary-fixed tracking-tighter text-lg md:text-xl hover:opacity-80 transition-opacity">
+                Financial Power Symbol
+            </a>
+            <nav class="hidden lg:flex items-center space-x-6">
+                <a href="#tab-dashboard" data-tab-target="dashboard" class="nav-menu-link active font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px]">Dashboard</a>
+                <a href="#tab-ai-predict" data-tab-target="ai-predict" class="nav-menu-link font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px]">AI Predict</a>
+                <a href="#tab-derivatives" data-tab-target="derivatives" class="nav-menu-link font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px]">Derivatives</a>
+                <a href="#tab-derivatives" data-tab-target="derivatives" class="nav-menu-link font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px] text-primary-fixed-dim font-bold">F&O</a>
+                <a href="#tab-derivatives" data-tab-target="derivatives" class="nav-menu-link font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px] text-primary-fixed-dim font-bold">IPO</a>
+                <a href="#tab-dashboard" data-tab-target="dashboard" class="nav-menu-link font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px]">Listings</a>
+                <a href="#tab-dashboard" data-tab-target="dashboard" class="nav-menu-link font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px]">Watchlist</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <span class="font-label-sm text-on-surface-variant text-[10px] hidden sm:inline-block border border-primary-fixed-dim/20 bg-primary-fixed-dim/5 px-3 py-1 rounded">MARKET: <span class="text-primary-fixed-dim font-bold">OPEN</span></span>
+                
+                <!-- Sign In / Log In and Sign Up Options -->
+                <div class="flex items-center space-x-3 border-l border-white/10 pl-4">
+                    <a href="#" onclick="alert('Login panel simulation. Welcome back!')" class="font-label-sm text-on-surface hover:text-primary-fixed-dim transition-colors uppercase tracking-widest text-[10px] hover:underline">Login</a>
+                    <button onclick="alert('Registration panel simulation. Get started today!')" class="px-3 py-1.5 border border-primary-fixed-dim/30 hover:border-primary-fixed-dim text-primary-fixed-dim font-bold text-[10px] rounded uppercase tracking-wider scale-95 hover:scale-100 active:scale-95 transition-all">
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Slide-in Left Sidebar Anchor (Appears smoothly when dashboard is active) -->
+    <aside id="sidebar-container" class="h-screen w-64 fixed left-0 top-0 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 flex flex-col p-4 z-40 transform -translate-x-full opacity-0 transition-all duration-500">
+        <div class="mt-20 mb-8 px-2">
+            <h1 class="font-headline-lg text-primary-fixed tracking-tighter text-xl">Financial Power Symbol</h1>
+            <div class="flex items-center mt-4 space-x-3">
+                <div class="w-10 h-10 rounded-full overflow-hidden border border-primary-fixed/30">
+                    <img alt="User Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClUTytVu8Kye2aWItPboJLyGkuqeIlkIH4irWrRwJpxCqdzAhGPbRRtFQ9B9WrypyHPnWAjwph-G3KeXacoq9ZH5I7h-GTLjqkSRpJh4LEzixIp_9wmH2LqggvkY0tTiDgIl2063AS8cNQ67LRkHgmpXm8GayWzAHNv6LDdzfem-ke-ph0MPevJbD4Q_src_Sc1xlrqPbdceVsT6gQ6nkmrxVimO-z1gt9m5fcU8-hUBTErylh77GdEIX9CNKeFj04hN2T8HnyrXA"/>
+                </div>
+                <div>
+                    <p class="font-label-sm text-on-surface uppercase tracking-widest leading-none text-xs">Trader Terminal</p>
+                    <p class="text-[10px] text-primary-fixed-dim">Pro Account</p>
+                </div>
+            </div>
+        </div>
+        <nav class="flex-1 space-y-1">
+            <a href="#tab-dashboard" data-tab-target="dashboard" class="sidebar-tab-link flex items-center space-x-3 p-3 text-on-surface-variant hover:text-primary-fixed-dim hover:bg-white/5 rounded-xl transition-all duration-200">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-label-sm uppercase tracking-widest text-[11px]">Dashboard</span>
+            </a>
+            <a href="#tab-ai-predict" data-tab-target="ai-predict" class="sidebar-tab-link flex items-center space-x-3 p-3 text-on-surface-variant hover:text-primary-fixed-dim hover:bg-white/5 rounded-xl transition-all duration-200">
+                <span class="material-symbols-outlined">psychology</span>
+                <span class="font-label-sm uppercase tracking-widest text-[11px]">AI Predict</span>
+            </a>
+            <a href="#tab-derivatives" data-tab-target="derivatives" class="sidebar-tab-link flex items-center space-x-3 p-3 text-on-surface-variant hover:text-primary-fixed-dim hover:bg-white/5 rounded-xl transition-all duration-200">
+                <span class="material-symbols-outlined">trending_up</span>
+                <span class="font-label-sm uppercase tracking-widest text-[11px]">Derivatives</span>
+            </a>
+            <a href="#tab-dashboard" data-tab-target="dashboard" class="sidebar-tab-link flex items-center space-x-3 p-3 text-on-surface-variant hover:text-primary-fixed-dim hover:bg-white/5 rounded-xl transition-all duration-200">
+                <span class="material-symbols-outlined">new_releases</span>
+                <span class="font-label-sm uppercase tracking-widest text-[11px]">Listings</span>
+            </a>
+            <a href="#tab-dashboard" data-tab-target="dashboard" class="sidebar-tab-link flex items-center space-x-3 p-3 text-on-surface-variant hover:text-primary-fixed-dim hover:bg-white/5 rounded-xl transition-all duration-200">
+                <span class="material-symbols-outlined">visibility</span>
+                <span class="font-label-sm uppercase tracking-widest text-[11px]">Watchlist</span>
+            </a>
+        </nav>
+        <div class="mt-auto">
+            <div class="p-3 bg-primary-container/5 border border-primary-fixed/10 rounded-lg mb-3">
+                <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Margin Available</p>
+                <p class="font-data-lg text-primary-fixed-dim font-bold">$42,900.50</p>
+            </div>
+            <button onclick="document.getElementById('watchlist').scrollIntoView({behavior: 'smooth'})" class="w-full py-3 bg-primary-fixed-dim text-on-primary-fixed font-bold rounded-lg glow-green hover:brightness-110 active:scale-95 transition-all text-xs uppercase tracking-widest">
+                Trade Now
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Dashboard Section (Scrolls up naturally below animation) -->
+    <main class="dashboard-content-wrapper z-10 w-full relative transition-all duration-500">
+        <!-- Top bar inside main content area -->
+        <div class="border-b border-white/5 py-4 px-6 md:px-margin-desktop flex justify-between items-center bg-surface/5 backdrop-blur-xl">
+            <div class="flex-1 max-w-xl">
+                <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-sm">search</span>
+                    <input class="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 text-xs focus:ring-1 focus:ring-primary-fixed-dim placeholder:text-on-surface-variant/40" placeholder="Search markets, assets, indices..." type="text"/>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 ml-6">
+                <button class="text-on-surface-variant hover:text-primary-fixed transition-colors relative">
+                    <span class="material-symbols-outlined text-md">notifications</span>
+                    <span class="absolute top-0 right-0 w-1.5 h-1.5 bg-primary-fixed-dim rounded-full"></span>
+                </button>
+                <button class="text-on-surface-variant hover:text-primary-fixed transition-colors">
+                    <span class="material-symbols-outlined text-md">settings</span>
+                </button>
+                <div class="h-6 w-[1px] bg-white/10"></div>
+                <span class="font-label-sm text-on-surface-variant text-[10px]">MARKET: <span class="text-primary-fixed-dim font-bold">OPEN</span></span>
+            </div>
+        </div>
+
+        <!-- Dynamic Content Stages -->
+        <div class="p-6 md:p-margin-desktop max-w-[1440px] mx-auto min-h-[100vh]">
+            
+            <!-- ------------------------------------------------------------- -->
+            <!-- TAB PANEL 1: DASHBOARD -->
+            <!-- ------------------------------------------------------------- -->
+            <div id="tab-panel-dashboard" class="tab-stage-panel grid grid-cols-12 gap-gutter-desktop active">
+                <!-- Left & Center Layout -->
+                <div class="col-span-12 lg:col-span-9 space-y-8">
+                    <!-- Row 1: Live Market Cards -->
+                    <div id="dashboard" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-card milled-edge p-6 rounded-xl glow-green">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">NIFTY 50</span>
+                                <span class="material-symbols-outlined text-primary-fixed-dim text-sm">trending_up</span>
+                            </div>
+                            <h2 class="font-display-lg text-primary-fixed text-2xl md:text-3xl">22,419.55</h2>
+                            <p class="text-primary-fixed-dim font-data-lg text-sm">+142.30 (0.64%)</p>
+                            <div class="mt-4 h-12 w-full bg-primary-fixed/5 rounded relative overflow-hidden">
+                                <div class="absolute inset-0 flex items-end">
+                                    <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+                                        <path d="M0 15 Q 10 5, 20 12 T 40 8 T 60 14 T 80 5 T 100 10" fill="none" stroke="#2ae500" stroke-width="1.5"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card milled-edge p-6 rounded-xl">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">SENSEX</span>
+                                <span class="material-symbols-outlined text-primary-fixed-dim text-sm">trending_up</span>
+                            </div>
+                            <h2 class="font-display-lg text-primary-fixed text-2xl md:text-3xl">73,872.29</h2>
+                            <p class="text-primary-fixed-dim font-data-lg text-sm">+456.20 (0.62%)</p>
+                            <div class="mt-4 h-12 w-full bg-primary-fixed/5 rounded relative overflow-hidden">
+                                <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+                                    <path d="M0 18 Q 15 10, 30 15 T 50 5 T 75 12 T 100 8" fill="none" stroke="#2ae500" stroke-width="1.5"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="glass-card milled-edge p-6 rounded-xl border-error/20">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="font-label-sm text-on-surface-variant uppercase tracking-widest text-xs">BANK NIFTY</span>
+                                <span class="material-symbols-outlined text-error text-sm">trending_down</span>
+                            </div>
+                            <h2 class="font-display-lg text-on-surface text-2xl md:text-3xl">47,286.40</h2>
+                            <p class="text-error font-data-lg text-sm">-89.15 (0.19%)</p>
+                            <div class="mt-4 h-12 w-full bg-error/5 rounded relative overflow-hidden">
+                                <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+                                    <path d="M0 5 Q 20 15, 40 10 T 60 18 T 80 12 T 100 16" fill="none" stroke="#ffb4ab" stroke-width="1.5"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 2: Trending Stocks Table -->
+                    <div id="listings" class="glass-card milled-edge rounded-xl overflow-hidden">
+                        <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                            <h3 class="font-headline-lg text-on-surface text-lg">Trending Stocks</h3>
+                            <button class="text-label-sm text-primary-fixed-dim uppercase tracking-widest text-[10px]">View All</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="text-on-surface-variant font-label-sm border-b border-white/5 text-[11px]">
+                                        <th class="px-6 py-4 font-medium uppercase">Company</th>
+                                        <th class="px-6 py-4 font-medium uppercase">Price</th>
+                                        <th class="px-6 py-4 font-medium uppercase">Change%</th>
+                                        <th class="px-6 py-4 font-medium uppercase">AI Signal</th>
+                                        <th class="px-6 py-4 font-medium uppercase text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="zebra-row hover:bg-white/5 transition-colors text-xs">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center font-bold text-primary-fixed">RL</div>
+                                                <div>
+                                                    <p class="font-data-lg leading-none font-semibold text-xs">RELIANCE</p>
+                                                    <p class="text-[9px] text-on-surface-variant uppercase">Energy &amp; Retail</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-data-lg text-on-surface font-semibold text-xs">₹2,984.40</td>
+                                        <td class="px-6 py-4 text-primary-fixed-dim font-semibold text-xs">+2.45%</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-2 py-1 rounded bg-primary-fixed/10 text-primary-fixed-dim text-[9px] font-bold border border-primary-fixed/20">STRONG BUY</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="p-2 hover:bg-white/10 rounded-full transition-all"><span class="material-symbols-outlined text-on-surface-variant text-md">add_circle</span></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="zebra-row hover:bg-white/5 transition-colors text-xs">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-8 h-8 rounded bg-tertiary/10 flex items-center justify-center font-bold text-tertiary-fixed">TC</div>
+                                                <div>
+                                                    <p class="font-data-lg leading-none font-semibold text-xs">TCS</p>
+                                                    <p class="text-[9px] text-on-surface-variant uppercase">IT Services</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-data-lg text-on-surface font-semibold text-xs">₹4,120.15</td>
+                                        <td class="px-6 py-4 text-error font-semibold text-xs">-0.82%</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-2 py-1 rounded bg-white/5 text-on-surface-variant text-[9px] font-bold border border-white/10 uppercase">HOLD</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="p-2 hover:bg-white/10 rounded-full transition-all"><span class="material-symbols-outlined text-on-surface-variant text-md">add_circle</span></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="zebra-row hover:bg-white/5 transition-colors text-xs">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center font-bold text-primary-fixed">HF</div>
+                                                <div>
+                                                    <p class="font-data-lg leading-none font-semibold text-xs">HDFC BANK</p>
+                                                    <p class="text-[9px] text-on-surface-variant uppercase">Banking</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-data-lg text-on-surface font-semibold text-xs">₹1,442.25</td>
+                                        <td class="px-6 py-4 text-primary-fixed-dim font-semibold text-xs">+1.12%</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-2 py-1 rounded bg-primary-fixed/10 text-primary-fixed-dim text-[9px] font-bold border border-primary-fixed/20">BUY</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="p-2 hover:bg-white/10 rounded-full transition-all"><span class="material-symbols-outlined text-on-surface-variant text-md">add_circle</span></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Row 3: AI Recommended Grid -->
+                    <div id="ai-predict-summary">
+                        <h3 class="font-headline-lg text-on-surface mb-6 text-lg">AI Precision Recommendations</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="glass-card milled-edge rounded-xl p-6 relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                    <span class="material-symbols-outlined text-[80px]">psychology</span>
+                                </div>
+                                <div class="flex justify-between items-start relative z-10">
+                                    <div>
+                                        <p class="font-label-sm text-on-surface-variant uppercase text-[10px]">Tech Focus</p>
+                                        <h4 class="font-headline-lg text-primary-fixed-dim text-lg">Infosys Ltd</h4>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-label-sm text-on-surface-variant text-[9px]">AI CONFIDENCE</p>
+                                        <p class="font-display-lg text-primary-fixed leading-none text-xl">94%</p>
+                                    </div>
+                                </div>
+                                <div class="mt-6 flex items-end justify-between relative z-10">
+                                    <div>
+                                        <p class="text-[9px] text-on-surface-variant uppercase tracking-tighter">Predicted Gain (T+5)</p>
+                                        <p class="font-data-lg text-primary-fixed-dim font-bold">+4.2%</p>
+                                    </div>
+                                    <button class="px-5 py-2 bg-primary-container text-on-primary-container font-bold rounded hover:scale-105 active:scale-95 transition-transform text-xs uppercase tracking-wider">EXECUTE BUY</button>
+                                </div>
+                            </div>
+                            <div class="glass-card milled-edge rounded-xl p-6 relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                    <span class="material-symbols-outlined text-[80px]">psychology</span>
+                                </div>
+                                <div class="flex justify-between items-start relative z-10">
+                                    <div>
+                                        <p class="font-label-sm text-on-surface-variant uppercase text-[10px]">Automotive</p>
+                                        <h4 class="font-headline-lg text-primary-fixed-dim text-lg">Tata Motors</h4>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-label-sm text-on-surface-variant text-[9px]">AI CONFIDENCE</p>
+                                        <p class="font-display-lg text-primary-fixed leading-none text-xl">88%</p>
+                                    </div>
+                                </div>
+                                <div class="mt-6 flex items-end justify-between relative z-10">
+                                    <div>
+                                        <p class="text-[9px] text-on-surface-variant uppercase tracking-tighter">Predicted Gain (T+3)</p>
+                                        <p class="font-data-lg text-primary-fixed-dim font-bold">+3.1%</p>
+                                    </div>
+                                    <button class="px-5 py-2 bg-primary-container text-on-primary-container font-bold rounded hover:scale-105 active:scale-95 transition-transform text-xs uppercase tracking-wider">EXECUTE BUY</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Panel -->
+                <div class="col-span-12 lg:col-span-3 space-y-6">
+                    <!-- Watchlist Widget -->
+                    <div id="watchlist" class="glass-card milled-edge rounded-xl h-fit">
+                        <div class="p-4 border-b border-white/5 flex justify-between items-center">
+                            <h4 class="font-label-sm text-on-surface uppercase tracking-widest text-xs">Your Watchlist</h4>
+                            <span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer">edit</span>
+                        </div>
+                        <div class="p-2 space-y-1">
+                            <div class="p-3 hover:bg-white/5 rounded-lg flex justify-between items-center transition-colors text-xs">
+                                <div>
+                                    <p class="font-data-lg leading-none font-semibold text-xs">AAPL</p>
+                                    <p class="text-[9px] text-on-surface-variant uppercase">NASDAQ</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-data-lg font-semibold text-xs">$189.43</p>
+                                    <p class="text-primary-fixed-dim text-[10px] font-bold">+1.24%</p>
+                                </div>
+                            </div>
+                            <div class="p-3 hover:bg-white/5 rounded-lg flex justify-between items-center transition-colors text-xs">
+                                <div>
+                                    <p class="font-data-lg leading-none font-semibold text-xs">TSLA</p>
+                                    <p class="text-[9px] text-on-surface-variant uppercase">NASDAQ</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-data-lg font-semibold text-xs">$175.22</p>
+                                    <p class="text-error text-[10px] font-bold">-2.10%</p>
+                                </div>
+                            </div>
+                            <div class="p-3 hover:bg-white/5 rounded-lg flex justify-between items-center transition-colors text-xs">
+                                <div>
+                                    <p class="font-data-lg leading-none font-semibold text-xs">COIN</p>
+                                    <p class="text-[9px] text-on-surface-variant uppercase">NASDAQ</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-data-lg font-semibold text-xs">$242.15</p>
+                                    <p class="text-primary-fixed-dim text-[10px] font-bold">+4.88%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-full p-4 text-on-surface-variant font-label-sm uppercase hover:text-primary-fixed transition-colors text-center border-t border-white/5 text-[10px] tracking-widest font-bold">
+                            Add New Asset
+                        </button>
+                    </div>
+                    <!-- Recent Activity -->
+                    <div class="glass-card milled-edge rounded-xl">
+                        <div class="p-4 border-b border-white/5">
+                            <h4 class="font-label-sm text-on-surface uppercase tracking-widest text-xs">Terminal Activity</h4>
+                        </div>
+                        <div class="p-4 space-y-4 text-xs">
+                            <div class="flex space-x-3 items-start">
+                                <div class="w-2 h-2 mt-2 rounded-full bg-primary-fixed-dim glow-green"></div>
+                                <div>
+                                    <p class="text-body-md text-on-surface leading-tight text-xs">Limit Buy Order Executed: <span class="text-primary-fixed">RELIANCE</span></p>
+                                    <p class="text-[9px] text-on-surface-variant mt-1 uppercase">2 minutes ago</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3 items-start">
+                                <div class="w-2 h-2 mt-2 rounded-full bg-tertiary-fixed-dim"></div>
+                                <div>
+                                    <p class="text-body-md text-on-surface leading-tight text-xs">AI Prediction Updated for <span class="text-tertiary-fixed">NIFTY NEXT 50</span></p>
+                                    <p class="text-[9px] text-on-surface-variant mt-1 uppercase">15 minutes ago</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3 items-start">
+                                <div class="w-2 h-2 mt-2 rounded-full bg-error"></div>
+                                <div>
+                                    <p class="text-body-md text-on-surface leading-tight text-xs">Stop Loss Triggered: <span class="text-error">ZOMATO</span></p>
+                                    <p class="text-[9px] text-on-surface-variant mt-1 uppercase">1 hour ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Performance Card -->
+                    <div id="derivatives" class="bg-primary-container/10 border border-primary-fixed/20 p-6 rounded-xl">
+                        <p class="font-label-sm text-primary-fixed uppercase mb-2 text-[10px] tracking-wider">Portfolio Value</p>
+                        <h3 class="font-display-lg text-primary-fixed-dim text-2xl font-bold">₹12,45,200</h3>
+                        <div class="mt-4 flex items-center text-primary-fixed-dim font-bold text-xs">
+                            <span class="material-symbols-outlined mr-1 text-sm">trending_up</span>
+                            <span>+18.4% this month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ------------------------------------------------------------- -->
+            <!-- TAB PANEL 2: AI PREDICT -->
+            <!-- ------------------------------------------------------------- -->
+            <div id="tab-panel-ai-predict" class="tab-stage-panel grid grid-cols-12 gap-gutter-desktop hidden">
+                <div class="col-span-12 lg:col-span-9 space-y-8">
+                    <!-- Gauge Card -->
+                    <div class="glass-card milled-edge rounded-xl p-8 text-center relative overflow-hidden flex flex-col items-center">
+                        <span class="font-label-sm text-primary-fixed uppercase tracking-widest text-[11px] mb-2">AI MARKET SENTIMENT</span>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-6">REAL-TIME GLOBAL ANALYSIS INDEX</p>
+                        
+                        <!-- Animated Circular Dial -->
+                        <div class="relative w-64 h-64 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.03)" stroke-width="6" fill="transparent" />
+                                <circle id="sentiment-gauge-circle" cx="50" cy="50" r="40" stroke="#2ae500" stroke-width="6" fill="transparent" 
+                                        stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" class="transition-all duration-1000 ease-out" />
+                            </svg>
+                            <div class="absolute flex flex-col items-center justify-center text-center">
+                                <span class="font-display-lg text-primary-fixed-dim text-5xl font-extrabold" id="sentiment-percentage-value">0%</span>
+                                <span class="font-label-sm text-on-surface uppercase tracking-widest text-[11px] mt-2 font-bold" id="sentiment-label-value">ANALYZING...</span>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-4 mt-6">
+                            <span class="flex items-center space-x-2 bg-primary-fixed-dim/10 border border-primary-fixed/20 px-4 py-1.5 rounded-full text-xs text-primary-fixed-dim">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim pulsing"></span>
+                                <span class="font-bold">Volatility Low</span>
+                            </span>
+                            <span class="flex items-center space-x-2 bg-primary-fixed-dim/10 border border-primary-fixed/20 px-4 py-1.5 rounded-full text-xs text-primary-fixed-dim">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim pulsing"></span>
+                                <span class="font-bold">Volume Surging</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Intraday Picks grid -->
+                    <div id="ai-predict" class="space-y-6">
+                        <h3 class="font-headline-lg text-on-surface text-lg">Intraday Picks <span class="text-[10px] text-on-surface-variant font-normal uppercase ml-2">Updated 2m ago</span></h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Pick 1 -->
+                            <div class="glass-card milled-edge rounded-xl p-6 relative overflow-hidden">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-data-lg font-semibold text-on-surface text-base">RELIANCE.NS</h4>
+                                        <p class="text-[10px] text-on-surface-variant uppercase">Conglomerate / Energy</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-primary-fixed-dim font-bold text-base">+2.45%</p>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">AI Probability: 89%</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 py-3 border-y border-white/5 my-4 text-xs">
+                                    <div>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Buy Above</p>
+                                        <p class="font-bold text-primary-fixed-dim">₹2,945.00</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Target</p>
+                                        <p class="font-bold text-primary-fixed">₹2,982.50</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Stop Loss</p>
+                                        <p class="font-bold text-error">₹2,920.00</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex items-center justify-between text-[10px]">
+                                    <span class="text-primary-fixed-dim font-semibold uppercase tracking-wider">Bullish Momentum</span>
+                                    <span class="text-on-surface-variant uppercase tracking-wider">Risk: Low</span>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-2">
+                                    <div class="h-full bg-gradient-to-r from-primary-fixed-dim to-emerald-500 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <!-- Pick 2 -->
+                            <div class="glass-card milled-edge rounded-xl p-6 relative overflow-hidden">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h4 class="font-data-lg font-semibold text-on-surface text-base">HDFCBANK.NS</h4>
+                                        <p class="text-[10px] text-on-surface-variant uppercase">Banking / FinTech</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-primary-fixed-dim font-bold text-base">+1.12%</p>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">AI Probability: 72%</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 py-3 border-y border-white/5 my-4 text-xs">
+                                    <div>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Buy Above</p>
+                                        <p class="font-bold text-primary-fixed-dim">₹1,432.00</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Target</p>
+                                        <p class="font-bold text-primary-fixed">₹1,465.00</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Stop Loss</p>
+                                        <p class="font-bold text-error">₹1,415.00</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex items-center justify-between text-[10px]">
+                                    <span class="text-primary-fixed-dim font-semibold uppercase tracking-wider">Support Holding</span>
+                                    <span class="text-on-surface-variant uppercase tracking-wider">Risk: Moderate</span>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-2">
+                                    <div class="h-full bg-gradient-to-r from-primary-fixed-dim to-orange-500 rounded-full" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Swing trades, AI gems & IPO Analysis grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Swing Trades -->
+                        <div class="glass-card milled-edge rounded-xl p-5 space-y-4">
+                            <h4 class="font-label-sm text-primary-fixed-dim uppercase tracking-widest text-[11px] border-b border-white/5 pb-3">SWING TRADES</h4>
+                            <div class="space-y-3 text-xs">
+                                <div class="flex items-center justify-between p-2 hover:bg-white/5 rounded transition-all">
+                                    <div>
+                                        <p class="font-bold text-on-surface text-xs">NVDA.US</p>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Bullish Engulfing</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Entry Zone</p>
+                                        <p class="font-bold text-primary-fixed text-[11px]">$122.50 - $125.00</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between p-2 hover:bg-white/5 rounded transition-all">
+                                    <div>
+                                        <p class="font-bold text-on-surface text-xs">TSLA.US</p>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Range Consolidation</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Exit Zone</p>
+                                        <p class="font-bold text-primary-fixed text-[11px]">$265.00 - $280.00</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between p-2 hover:bg-white/5 rounded transition-all">
+                                    <div>
+                                        <p class="font-bold text-on-surface text-xs">AMD.US</p>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Golden Cross</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Entry Zone</p>
+                                        <p class="font-bold text-primary-fixed text-[11px]">$148.00 - $152.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- AI Gems -->
+                        <div class="glass-card milled-edge rounded-xl p-5 space-y-4">
+                            <h4 class="font-label-sm text-primary-fixed-dim uppercase tracking-widest text-[11px] border-b border-white/5 pb-3">AI GEMS</h4>
+                            <div class="space-y-3 text-xs">
+                                <div class="p-3 bg-white/3 border border-white/5 rounded-lg">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <p class="font-bold text-on-surface text-xs">QUANTUM-X</p>
+                                        <span class="px-1.5 py-0.5 rounded bg-primary-fixed-dim/20 text-primary-fixed-dim text-[8px] font-bold">TOP PICK</span>
+                                    </div>
+                                    <p class="text-[9px] text-on-surface-variant leading-none uppercase">Neural AI Platform</p>
+                                    <div class="mt-2 flex justify-between items-center text-[10px]">
+                                        <span>AI Score: 98/100</span>
+                                        <span class="text-primary-fixed-dim font-bold">Est Growth: +450%</span>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-white/3 border border-white/5 rounded-lg">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <p class="font-bold text-on-surface text-xs">NEURO-FIN</p>
+                                        <span class="px-1.5 py-0.5 rounded bg-white/5 text-on-surface-variant text-[8px] font-bold">STABLE</span>
+                                    </div>
+                                    <p class="text-[9px] text-on-surface-variant leading-none uppercase">Fraud Prevention</p>
+                                    <div class="mt-2 flex justify-between items-center text-[10px]">
+                                        <span>AI Score: 92/100</span>
+                                        <span class="text-primary-fixed-dim font-bold">Est Growth: +210%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- IPO Analysis -->
+                        <div class="glass-card milled-edge rounded-xl p-5 space-y-4">
+                            <h4 class="font-label-sm text-primary-fixed-dim uppercase tracking-widest text-[11px] border-b border-white/5 pb-3">IPO ANALYSIS</h4>
+                            <div class="space-y-3 text-xs">
+                                <div class="flex items-center justify-between p-1">
+                                    <div>
+                                        <p class="font-bold text-on-surface text-xs">Cerebras AI</p>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Tech / Hardware</p>
+                                    </div>
+                                    <span class="text-primary-fixed-dim text-xs">★★★★★</span>
+                                </div>
+                                <div class="flex items-center justify-between p-1">
+                                    <div>
+                                        <p class="font-bold text-on-surface text-xs">Zeno Health</p>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Pharma / Retail</p>
+                                    </div>
+                                    <span class="text-primary-fixed-dim text-xs">★★★★★</span>
+                                </div>
+                                <div class="flex items-center justify-between p-1">
+                                    <div>
+                                        <p class="font-bold text-on-surface text-xs">Oceanic Bio</p>
+                                        <p class="text-[9px] text-on-surface-variant uppercase">Eco / Energy</p>
+                                    </div>
+                                    <span class="text-primary-fixed-dim text-xs">★★★★★</span>
+                                </div>
+                            </div>
+                            <button class="w-full py-2 bg-white/5 hover:bg-white/10 text-on-surface font-semibold text-[10px] rounded uppercase tracking-wider transition-all mt-2">
+                                VIEW ALL UPCOMING
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar (News Sentiment) -->
+                <div class="col-span-12 lg:col-span-3 space-y-6">
+                    <div class="glass-card milled-edge rounded-xl h-fit">
+                        <div class="p-4 border-b border-white/5">
+                            <h4 class="font-label-sm text-on-surface uppercase tracking-widest text-xs">NEWS SENTIMENT</h4>
+                        </div>
+                        <div class="p-4 space-y-4 text-xs">
+                            <div class="p-3 bg-white/3 border border-white/5 rounded-lg space-y-2">
+                                <span class="px-2 py-0.5 rounded bg-primary-fixed/10 text-primary-fixed-dim text-[8px] font-bold border border-primary-fixed/20">BULLISH</span>
+                                <p class="text-xs text-on-surface leading-tight font-medium">Federal Reserve hints at steady rates through Q4, markets react with optimism.</p>
+                                <p class="text-[9px] text-on-surface-variant uppercase">Source: Reuters • 12m ago</p>
+                            </div>
+                            <div class="p-3 bg-white/3 border border-white/5 rounded-lg space-y-2 border-red-500/10">
+                                <span class="px-2 py-0.5 rounded bg-error/10 text-error text-[8px] font-bold border border-error/20">BEARISH</span>
+                                <p class="text-xs text-on-surface leading-tight font-medium">Tech giant supply chain issues could impact holiday shipping targets.</p>
+                                <p class="text-[9px] text-on-surface-variant uppercase">Source: Bloomberg • 45m ago</p>
+                            </div>
+                            <div class="p-3 bg-white/3 border border-white/5 rounded-lg space-y-2">
+                                <span class="px-2 py-0.5 rounded bg-primary-fixed/10 text-primary-fixed-dim text-[8px] font-bold border border-primary-fixed/20">BULLISH</span>
+                                <p class="text-xs text-on-surface leading-tight font-medium">New AI Infrastructure bill passes senate, boosting local semiconductor sector.</p>
+                                <p class="text-[9px] text-on-surface-variant uppercase">Source: CNBC • 1h ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ------------------------------------------------------------- -->
+            <!-- TAB PANEL 3: DERIVATIVES / F&O -->
+            <!-- ------------------------------------------------------------- -->
+            <div id="tab-panel-derivatives" class="tab-stage-panel grid grid-cols-12 gap-gutter-desktop hidden">
+                <div class="col-span-12 lg:col-span-9 space-y-8">
+                    <!-- F&O option chain widget -->
+                    <div class="glass-card milled-edge rounded-xl p-6">
+                        <div class="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+                            <div>
+                                <h3 class="font-headline-lg text-on-surface text-2xl">F&O + <span class="text-primary-fixed-dim">IPO Terminal</span></h3>
+                                <p class="text-xs text-on-surface-variant uppercase tracking-widest mt-1">Real-time options liquidity and algorithmic IPO ranking.</p>
+                            </div>
+                            <!-- F&O CHAIN / IPO HUB Toggle -->
+                            <div class="flex bg-white/5 p-1 rounded-lg border border-white/5">
+                                <button class="px-4 py-1.5 bg-primary-fixed-dim text-on-primary-fixed font-bold text-xs rounded-md shadow-lg uppercase tracking-wider transition-all">F&O CHAIN</button>
+                                <button class="px-4 py-1.5 text-on-surface-variant hover:text-on-surface font-semibold text-xs rounded-md uppercase tracking-wider transition-all" onclick="alert('IPO Hub details unlocked. Loading upcoming pipelines.')">IPO HUB</button>
+                            </div>
+                        </div>
+
+                        <!-- Table Index Header info -->
+                        <div class="flex justify-between items-center bg-white/3 border border-white/5 p-4 rounded-xl mb-6">
+                            <div class="flex items-center space-x-3">
+                                <span class="font-bold text-on-surface text-sm uppercase">NIFTY 50 INDEX</span>
+                                <span class="text-primary-fixed-dim font-bold text-sm">22341.62 (+0.41%)</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-xs">
+                                <span class="text-on-surface-variant">EXPIRY:</span>
+                                <select class="bg-surface-container-low border border-white/10 rounded px-2 py-1 text-xs text-on-surface focus:ring-1 focus:ring-primary-fixed-dim">
+                                    <option>28 MAR 2024</option>
+                                    <option>04 APR 2024</option>
+                                </select>
+                                <span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer hover:text-white">settings</span>
+                            </div>
+                        </div>
+
+                        <!-- Option Chain calls/puts table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center text-xs">
+                                <thead>
+                                    <!-- Calls / Puts headers -->
+                                    <tr class="border-b border-white/5 text-on-surface-variant font-bold text-[10px] tracking-wider uppercase bg-white/2">
+                                        <th colspan="3" class="py-2 border-r border-white/5 text-emerald-500">CALLS</th>
+                                        <th class="py-2 text-primary-fixed-dim">STRIKE</th>
+                                        <th colspan="3" class="py-2 border-l border-white/5 text-rose-500">PUTS</th>
+                                    </tr>
+                                    <tr class="border-b border-white/5 text-[10px] text-on-surface-variant bg-white/2">
+                                        <th class="py-2">OI (LAKHS)</th>
+                                        <th class="py-2">LTP</th>
+                                        <th class="py-2 border-r border-white/5">CHG%</th>
+                                        <th class="py-2 font-bold text-on-surface bg-white/3">PRICE</th>
+                                        <th class="py-2 border-l border-white/5">CHG%</th>
+                                        <th class="py-2">LTP</th>
+                                        <th class="py-2">OI (LAKHS)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="zebra-row hover:bg-white/5 transition-all">
+                                        <td class="py-3">42.1</td>
+                                        <td class="py-3 font-semibold">184.20</td>
+                                        <td class="py-3 text-error border-r border-white/5">-12.4%</td>
+                                        <td class="py-3 font-bold text-primary-fixed-dim bg-white/3 border-r border-l border-white/5">22250</td>
+                                        <td class="py-3 text-primary-fixed-dim">+8.2%</td>
+                                        <td class="py-3 font-semibold">45.10</td>
+                                        <td class="py-3">12.5</td>
+                                    </tr>
+                                    <tr class="zebra-row hover:bg-white/5 transition-all">
+                                        <td class="py-3">68.4</td>
+                                        <td class="py-3 font-semibold">142.10</td>
+                                        <td class="py-3 text-error border-r border-white/5">-22.1%</td>
+                                        <td class="py-3 font-bold text-primary-fixed-dim bg-white/3 border-r border-l border-white/5">22300</td>
+                                        <td class="py-3 text-primary-fixed-dim">+15.4%</td>
+                                        <td class="py-3 font-semibold">62.80</td>
+                                        <td class="py-3">28.9</td>
+                                    </tr>
+                                    <tr class="zebra-row hover:bg-white/5 transition-all bg-white/3 border-y border-primary-fixed-dim/20">
+                                        <td class="py-3">102.5</td>
+                                        <td class="py-3 font-semibold">98.50</td>
+                                        <td class="py-3 text-error border-r border-white/5">-38.2%</td>
+                                        <td class="py-3 font-bold text-primary-fixed-dim bg-white/4 border-r border-l border-white/5 glow-green">22350</td>
+                                        <td class="py-3 text-primary-fixed-dim">+24.9%</td>
+                                        <td class="py-3 font-semibold">89.40</td>
+                                        <td class="py-3">44.2</td>
+                                    </tr>
+                                    <tr class="zebra-row hover:bg-white/5 transition-all">
+                                        <td class="py-3">45.8</td>
+                                        <td class="py-3 font-semibold">65.20</td>
+                                        <td class="py-3 text-error border-r border-white/5">-45.2%</td>
+                                        <td class="py-3 font-bold text-primary-fixed-dim bg-white/3 border-r border-l border-white/5">22400</td>
+                                        <td class="py-3 text-primary-fixed-dim">+42.1%</td>
+                                        <td class="py-3 font-semibold">112.50</td>
+                                        <td class="py-3">82.1</td>
+                                    </tr>
+                                    <tr class="zebra-row hover:bg-white/5 transition-all">
+                                        <td class="py-3">22.1</td>
+                                        <td class="py-3 font-semibold">42.80</td>
+                                        <td class="py-3 text-error border-r border-white/5">-58.1%</td>
+                                        <td class="py-3 font-bold text-primary-fixed-dim bg-white/3 border-r border-l border-white/5">22450</td>
+                                        <td class="py-3 text-primary-fixed-dim">+68.2%</td>
+                                        <td class="py-3 font-semibold">165.40</td>
+                                        <td class="py-3">142.6</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Option Action buttons -->
+                        <div class="mt-6 flex flex-wrap gap-4 border-t border-white/5 pt-6 text-xs justify-center md:justify-start">
+                            <button onclick="alert('Quick Execution initialized on strike 22350')" class="px-5 py-2.5 bg-primary-fixed-dim text-on-primary-fixed font-bold rounded-lg glow-green scale-95 active:scale-90 transition-all uppercase tracking-wider flex items-center space-x-2">
+                                <span class="material-symbols-outlined text-sm">flash_on</span>
+                                <span>Quick Execute</span>
+                            </button>
+                            <button onclick="alert('Strategy Builder compiled. Standard covered calls recommended.')" class="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-on-surface font-semibold rounded-lg transition-all border border-white/10 uppercase tracking-wider flex items-center space-x-2">
+                                <span class="material-symbols-outlined text-sm">construction</span>
+                                <span>Strategy Builder</span>
+                            </button>
+                            <button onclick="alert('Data exported as CSV/Excel.')" class="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-on-surface font-semibold rounded-lg transition-all border border-white/10 uppercase tracking-wider flex items-center space-x-2">
+                                <span class="material-symbols-outlined text-sm">download</span>
+                                <span>Export Data</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar (Smart AI Insights & Heatmaps) -->
+                <div class="col-span-12 lg:col-span-3 space-y-6">
+                    <!-- Smart AI Insights -->
+                    <div class="glass-card milled-edge rounded-xl p-5 space-y-4">
+                        <div class="flex items-center space-x-2 border-b border-white/5 pb-3">
+                            <span class="material-symbols-outlined text-primary-fixed-dim text-md">psychology</span>
+                            <h4 class="font-label-sm text-primary-fixed-dim uppercase tracking-widest text-[11px]">SMART AI INSIGHTS</h4>
+                        </div>
+                        <div class="space-y-4 text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-on-surface-variant text-[10px] uppercase">MARKET SENTIMENT</span>
+                                <span class="text-primary-fixed-dim font-bold uppercase tracking-wider">BULLISH</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-white/3 border border-white/5 p-3 rounded-lg text-center">
+                                    <p class="text-[9px] text-on-surface-variant uppercase">PCR Ratio</p>
+                                    <p class="font-display-lg text-primary-fixed font-bold text-xl mt-1">1.24</p>
+                                </div>
+                                <div class="bg-white/3 border border-white/5 p-3 rounded-lg text-center">
+                                    <p class="text-[9px] text-on-surface-variant uppercase">Max Pain</p>
+                                    <p class="font-display-lg text-primary-fixed font-bold text-xl mt-1">22300</p>
+                                </div>
+                            </div>
+                            <div class="p-3.5 bg-primary-fixed-dim/5 border-l-2 border-primary-fixed-dim rounded text-on-surface-variant italic leading-relaxed text-[11px]">
+                                "Aggressive call writing observed at 22500 level. Downside protection visible at 22100. AI projects 68% probability of range-bound expiry."
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OI Heatmap -->
+                    <div class="glass-card milled-edge rounded-xl p-5 space-y-4">
+                        <div class="flex items-center space-x-2 border-b border-white/5 pb-3">
+                            <span class="material-symbols-outlined text-primary-fixed-dim text-md">analytics</span>
+                            <h4 class="font-label-sm text-on-surface uppercase tracking-widest text-[11px]">OI CONCENTRATION HEATMAP</h4>
+                        </div>
+                        <!-- Mini Heatmap Bar Charts -->
+                        <div class="space-y-3 text-[10px]">
+                            <div>
+                                <div class="flex justify-between text-on-surface-variant mb-1">
+                                    <span>-2.0% (Puts Concentration)</span>
+                                    <span>42%</span>
+                                </div>
+                                <div class="h-6 w-full bg-white/5 rounded relative overflow-hidden">
+                                    <div class="h-full bg-rose-500/30 border-r border-rose-500" style="width: 42%"></div>
+                                    <span class="absolute inset-0 flex items-center pl-3 font-semibold text-rose-300">BEARISH WALL</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-on-surface-variant mb-1">
+                                    <span>SPOT PRICE (Straddle Zone)</span>
+                                    <span>24%</span>
+                                </div>
+                                <div class="h-6 w-full bg-white/5 rounded relative overflow-hidden">
+                                    <div class="h-full bg-yellow-500/20 border-r border-yellow-500" style="width: 24%"></div>
+                                    <span class="absolute inset-0 flex items-center pl-3 font-semibold text-yellow-300">ATM STRADDLE</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-on-surface-variant mb-1">
+                                    <span>+2.0% (Calls Concentration)</span>
+                                    <span>88%</span>
+                                </div>
+                                <div class="h-6 w-full bg-white/5 rounded relative overflow-hidden">
+                                    <div class="h-full bg-primary-fixed-dim/30 border-r border-primary-fixed-dim glow-green" style="width: 88%"></div>
+                                    <span class="absolute inset-0 flex items-center pl-3 font-semibold text-primary-fixed-dim">BULLISH SURGE</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Anchor -->
+        <footer class="w-full py-8 bg-surface-container-low border-t border-outline-variant/10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter-desktop px-6 md:px-margin-desktop max-w-container-max mx-auto">
+                <div class="col-span-1 md:col-span-1">
+                    <p class="font-headline-lg text-primary-fixed-dim mb-2 text-xl">FPS</p>
+                    <p class="font-label-sm text-on-surface-variant text-[11px] mb-2">Made by <span class="text-primary-fixed-dim font-bold">Ashish Verma</span></p>
+                    <p class="font-label-sm text-on-surface-variant text-[10px] mb-4">© 2026 Financial Power Symbol. All Rights Reserved.</p>
+                    <div class="flex items-center space-x-3 mt-3">
+                        <!-- Instagram SVG Link -->
+                        <a href="https://share.google/DEUwJzgDHIKUXPHMZ" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-on-surface hover:text-primary-fixed-dim hover:bg-primary-fixed-dim/10 hover:border-primary-fixed-dim/30 transition-all shadow-[0_0_10px_rgba(255,255,255,0.05)] hover:shadow-[0_0_15px_rgba(42,229,0,0.3)]" title="Instagram">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                            </svg>
+                        </a>
+                        <!-- LinkedIn SVG Link -->
+                        <a href="https://www.linkedin.com/in/ashish-kumar-769a913a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-on-surface hover:text-primary-fixed-dim hover:bg-primary-fixed-dim/10 hover:border-primary-fixed-dim/30 transition-all shadow-[0_0_10px_rgba(255,255,255,0.05)] hover:shadow-[0_0_15px_rgba(42,229,0,0.3)]" title="LinkedIn">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="font-label-sm text-on-surface uppercase mb-4 tracking-widest text-xs">Platform</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">Markets</a></li>
+                        <li><a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">Predictions</a></li>
+                        <li><a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">API Docs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-label-sm text-on-surface uppercase mb-4 tracking-widest text-xs">Security</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">Privacy Policy</a></li>
+                        <li><a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">Terms of Service</a></li>
+                        <li><a class="font-label-sm text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">Risk Disclosure</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-label-sm text-on-surface uppercase mb-4 tracking-widest text-xs">Terminal Speed</h5>
+                    <div class="flex items-center space-x-2 text-primary-fixed-dim text-xs">
+                        <span class="w-2 h-2 rounded-full bg-primary-fixed-dim"></span>
+                        <span class="font-label-sm uppercase font-bold">12ms Latency</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
